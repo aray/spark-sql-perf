@@ -121,12 +121,22 @@ abstract class Benchmark(
       includeBreakdown: Boolean = false,
       iterations: Int = 3,
       variations: Seq[Variation[_]] = Seq(Variation("StandardRun", Seq("true")) { _ => {} }),
-      tags: Map[String, String] = Map.empty) = {
+      tags: Map[String, String] = Map.empty,
+      verbose: Boolean = false) = {
 
     class ExperimentStatus {
       val currentResults = new collection.mutable.ArrayBuffer[BenchmarkResult]()
       val currentRuns = new collection.mutable.ArrayBuffer[ExperimentRun]()
-      val currentMessages = new collection.mutable.ArrayBuffer[String]()
+      val currentMessages = if (verbose) {
+        new collection.mutable.ArrayBuffer[String]() {
+          override def +=(elem: String) = {
+            println("log: " + elem)
+            super.+=(elem)
+          }
+        }
+      } else {
+        new collection.mutable.ArrayBuffer[String]()
+      }
 
       // Stats for HTML status message.
       @volatile var currentExecution = ""
