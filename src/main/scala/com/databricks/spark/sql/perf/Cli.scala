@@ -31,7 +31,7 @@ object Cli {
       case Array("generate", tablePath, format, scaleFactor, tpcdsKitTools) =>
         val sqlContext = getSqlCtx("spark-sql-perf generate")
         val tables = new Tables(sqlContext, tpcdsKitTools, scaleFactor.toInt)
-        tables.genData(tablePath, format, false, false, false, false, false)
+        tables.genData(tablePath, format, true, false, false, false, false)
       case Array("run", tablePath, format) =>
         val sqlContext = getSqlCtx("spark-sql-perf run")
         val tables = new Tables(sqlContext, null, 0) //dsdgen dir and scale factor are not needed
